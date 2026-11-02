@@ -1,0 +1,172 @@
+erDiagram
+    roles ||--o{ users : "memiliki"
+    users ||--o| applicants : "1 akun 1 siswa"
+    applicants ||--o{ guardians : "memiliki"
+    applicants ||--o{ applications : "mengajukan"
+    academic_years ||--o{ admission_periods : "memiliki"
+    admission_periods ||--o{ applications : "menampung"
+    admission_paths ||--o{ applications : "dipilih"
+    majors ||--o{ applications : "pilihan 1"
+    majors ||--o{ applications : "pilihan 2"
+    applications ||--o{ application_documents : "memiliki"
+    document_types ||--o{ application_documents : "jenisnya"
+    applications ||--o{ payments : "memiliki"
+    applications ||--o{ selection_results : "dinilai"
+    admission_periods ||--o{ period_major_quotas : "kuota per jurusan"
+    majors ||--o{ period_major_quotas : "kuotanya"
+    admission_paths ||--o{ path_document_requirements : "syaratnya"
+    document_types ||--o{ path_document_requirements : "disyaratkan"
+    admission_periods ||--o{ announcements : "pengumuman"
+    users ||--o{ notifications : "menerima"
+    users ||--o{ audit_logs : "pelaku"
+    users ||--o{ announcements : "membuat"
+
+    roles {
+        bigint id PK
+        varchar code UK
+        varchar name
+    }
+    users {
+        bigint id PK
+        bigint role_id FK
+        varchar name
+        varchar email UK
+        varchar password
+        boolean is_active
+    }
+    applicants {
+        bigint id PK
+        bigint user_id FK_UK
+        varchar full_name
+        varchar nik UK
+        varchar nisn UK
+        enum gender
+        date birth_date
+        varchar previous_school
+    }
+    guardians {
+        bigint id PK
+        bigint applicant_id FK
+        enum relationship
+        varchar name
+        varchar phone
+        varchar occupation
+    }
+    academic_years {
+        bigint id PK
+        varchar year UK
+        boolean is_active
+    }
+    admission_periods {
+        bigint id PK
+        bigint academic_year_id FK
+        varchar name
+        date start_date
+        date end_date
+        enum status
+    }
+    admission_paths {
+        bigint id PK
+        varchar code UK
+        varchar name
+        int quota
+        boolean is_active
+    }
+    majors {
+        bigint id PK
+        varchar code UK
+        varchar name
+        int quota
+        boolean is_active
+    }
+    document_types {
+        bigint id PK
+        varchar code UK
+        varchar name
+        varchar allowed_extensions
+        int max_size_mb
+    }
+    period_major_quotas {
+        bigint id PK
+        bigint period_id FK
+        bigint major_id FK
+        int quota
+    }
+    path_document_requirements {
+        bigint id PK
+        bigint path_id FK
+        bigint document_type_id FK
+        boolean is_required
+    }
+    applications {
+        bigint id PK
+        bigint applicant_id FK
+        bigint period_id FK
+        bigint path_id FK
+        bigint major_id FK
+        bigint major_choice_2_id FK
+        varchar registration_no UK
+        enum status
+        datetime submitted_at
+        bigint verified_by FK
+    }
+    application_documents {
+        bigint id PK
+        bigint application_id FK
+        bigint document_type_id FK
+        varchar file_path
+        enum verification_status
+        bigint verified_by FK
+    }
+    payments {
+        bigint id PK
+        bigint application_id FK
+        enum payment_type
+        varchar invoice_no UK
+        decimal amount
+        enum method
+        varchar proof_path
+        enum status
+        datetime paid_at
+    }
+    selection_results {
+        bigint id PK
+        bigint application_id FK
+        varchar stage
+        varchar subject
+        decimal score
+        int rank
+        enum result_status
+        bigint assessed_by FK
+    }
+    announcements {
+        bigint id PK
+        bigint period_id FK
+        varchar title
+        text content
+        datetime publish_at
+        boolean is_published
+        bigint created_by FK
+    }
+    notifications {
+        bigint id PK
+        bigint user_id FK
+        varchar title
+        text message
+        enum channel
+        boolean is_read
+    }
+    audit_logs {
+        bigint id PK
+        bigint user_id FK
+        varchar action
+        varchar table_name
+        bigint record_id
+        json old_value
+        json new_value
+    }
+    settings {
+        bigint id PK
+        varchar key UK
+        text value
+    }
