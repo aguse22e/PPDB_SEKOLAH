@@ -2,6 +2,8 @@
 
 Aplikasi Penerimaan Peserta Didik Baru (PPDB) untuk sekolah — mencakup desain database, paket Laravel siap pasang, dan preview web interaktif.
 
+**Demo langsung:** https://aguse22e.github.io/PPDB_SEKOLAH/ — masuk dengan akun demo `admin@sekolah.sch.id` / `password` (peran Admin), atau daftar sendiri sebagai siswa.
+
 ## Isi Repo
 
 - `laravel/` — Paket Laravel lengkap: 20 migration, 19 model, 26 controller, 10 form request, 56 view Blade, seeder, factory, dan auth bawaan (register, login, reset password) dengan peran applicant, guru, admin, verifikator, finance, dan kepala sekolah.
