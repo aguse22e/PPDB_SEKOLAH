@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordChangeController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredApplicantController;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+    // Ganti kata sandi (dipakai saat wajib ganti kata sandi awal).
+    Route::get('/ganti-password', [PasswordChangeController::class, 'edit'])->name('password.change');
+    Route::put('/ganti-password', [PasswordChangeController::class, 'update'])->name('password.change.update');
 });

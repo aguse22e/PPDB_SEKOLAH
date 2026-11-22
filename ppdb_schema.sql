@@ -35,6 +35,7 @@ CREATE TABLE users (
   phone VARCHAR(20) NULL,
   password_hash VARCHAR(255) NOT NULL,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
+  must_change_password TINYINT(1) NOT NULL DEFAULT 0, -- 1 = wajib ganti kata sandi awal saat login pertama
   email_verified_at DATETIME NULL,
   last_login_at DATETIME NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

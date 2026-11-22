@@ -32,3 +32,4 @@ attendances: 1 siswa (applicants) / 1 guru (users) per hari
 4. Kuota jurusan per gelombang diatur di `period_major_quotas`, bukan hanya di `majors.quota`.
 5. NIK / nomor KK termasuk data sensitif: batasi akses per role, catat di `audit_logs`, jangan tampilkan penuh di laporan publik.
 6. Absensi barcode: satu orang satu baris per hari (`attendances`, unik per `attendee_type` + `attendee_id` + `date`); scan pertama = masuk, scan kedua = pulang. Kode barcode siswa `SIS + id` di `applicants.barcode_code`, guru `GRU + id` di `users.barcode_code`; jam masuk dari Setting `attendance.start_time` (default 07:00), masuk setelah jam itu berstatus `terlambat`.
+7. Perlindungan data: NIK disamarkan di export CSV (hanya 4 digit terakhir); kata sandi awal dari seeder wajib diganti saat login pertama (`users.must_change_password` + middleware `EnsurePasswordChanged`); berkas `.env` dan hasil build tidak ikut ter-commit (lihat `.gitignore`).

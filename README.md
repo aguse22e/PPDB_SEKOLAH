@@ -6,7 +6,7 @@ Aplikasi Penerimaan Peserta Didik Baru (PPDB) untuk sekolah — mencakup desain 
 
 ## Isi Repo
 
-- `laravel/` — Paket Laravel lengkap: 23 migration, 20 model, 28 controller, 10 form request, 60 view Blade, seeder, factory, dan auth bawaan (register, login, reset password) dengan peran applicant, guru, admin, verifikator, finance, dan kepala sekolah.
+- `laravel/` — Paket Laravel lengkap: 24 migration, 20 model, 29 controller, 10 form request, 61 view Blade, seeder, factory, dan auth bawaan (register, login, reset password) dengan peran applicant, guru, admin, verifikator, finance, dan kepala sekolah.
 - `preview/preview-web-ppdb.html` — Preview web satu berkas yang dapat dibuka langsung di browser: Beranda Publik, register/login per peran, dashboard siswa/guru/admin, CRUD data master, unggah berkas, verifikasi, pembayaran, dan laporan (simulasi dengan penyimpanan browser).
 - `ppdb_schema.sql` — Skema MySQL 19 tabel.
 - `ERD.md` dan `erd/` — Entity Relationship Diagram (teks, Mermaid, SVG, dan HTML).

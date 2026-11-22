@@ -24,6 +24,7 @@ use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\AttendanceScanController as GuruAttendanceController;
 use App\Http\Controllers\Guru\SelectionController as GuruSelectionController;
 use App\Http\Controllers\Public\PpdbPublicController;
+use App\Http\Middleware\EnsurePasswordChanged;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,7 +54,7 @@ Route::prefix('ppdb')->name('ppdb.')->group(function () {
 // ---------------------------------------------------------------------
 // CALON SISWA / PENDAFTAR
 // ---------------------------------------------------------------------
-Route::middleware(['auth', 'idle.timeout', 'role:applicant'])
+Route::middleware(['auth', 'idle.timeout', EnsurePasswordChanged::class, 'role:applicant'])
     ->prefix('pendaftar')
     ->name('applicant.')
     ->group(function () {
@@ -97,7 +98,7 @@ Route::middleware(['auth', 'idle.timeout', 'role:applicant'])
 // ---------------------------------------------------------------------
 // ADMIN / PANITIA
 // ---------------------------------------------------------------------
-Route::middleware(['auth', 'idle.timeout'])
+Route::middleware(['auth', 'idle.timeout', EnsurePasswordChanged::class])
     ->prefix('admin/ppdb')
     ->name('admin.')
     ->group(function () {
@@ -191,7 +192,7 @@ Route::middleware(['auth', 'idle.timeout'])
 // area guru hanya untuk peran guru — admin TIDAK ikut membuka,
 // begitu pula guru tidak bisa membuka area admin / pendaftar.
 // ---------------------------------------------------------------------
-Route::middleware(['auth', 'idle.timeout', 'role:guru'])
+Route::middleware(['auth', 'idle.timeout', EnsurePasswordChanged::class, 'role:guru'])
     ->prefix('guru/ppdb')
     ->name('guru.')
     ->group(function () {

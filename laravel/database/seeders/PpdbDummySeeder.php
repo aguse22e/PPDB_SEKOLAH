@@ -51,7 +51,7 @@ class PpdbDummySeeder extends Seeder
         $this->seedRandomApplicants($periodOpen, 30);
         $this->seedAnnouncements($periodOpen);
 
-        $this->command?->info('Data dummy PPDB selesai dibuat. Akun uji (password semua: "password"):');
+        $this->command?->info('Data dummy PPDB selesai dibuat. Akun uji (kata sandi awal semua: "password", wajib diganti saat login pertama):');
         $this->command?->info('  admin@sekolah.sch.id | verifikator@sekolah.sch.id | keuangan@sekolah.sch.id | kepsek@sekolah.sch.id | guru@sekolah.sch.id | siswa@contoh.id');
     }
 
@@ -74,6 +74,8 @@ class PpdbDummySeeder extends Seeder
                     'name' => $person['name'],
                     'password' => Hash::make('password'),
                     'is_active' => true,
+                    // Kata sandi awal wajib diganti saat login pertama.
+                    'must_change_password' => true,
                 ]
             );
         }
@@ -125,6 +127,8 @@ class PpdbDummySeeder extends Seeder
                 'phone' => '081200000001',
                 'password' => Hash::make('password'),
                 'is_active' => true,
+                // Kata sandi awal wajib diganti saat login pertama.
+                'must_change_password' => true,
             ]
         );
 

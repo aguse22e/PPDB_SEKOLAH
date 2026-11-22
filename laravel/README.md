@@ -5,16 +5,16 @@ Ditulis dengan gaya Laravel 11/12 (anonymous class migration).
 
 ## Isi paket
 
-- `database/migrations/` — 23 migration, nomor urut 000001–000023 agar foreign key aman saat `migrate` (000020 = `password_reset_tokens` + `sessions` untuk auth; 000021–000023 = tabel `attendances` + kolom `barcode_code`)
+- `database/migrations/` — 24 migration, nomor urut 000001–000024 agar foreign key aman saat `migrate` (000020 = `password_reset_tokens` + `sessions` untuk auth; 000021–000023 = tabel `attendances` + kolom `barcode_code`; 000024 = kolom `must_change_password`)
 - `database/seeders/PpdbMasterSeeder.php` — role, jalur, jenis dokumen, syarat dokumen per jalur, settings, dan 1 akun admin awal
 - `database/factories/` + `database/seeders/PpdbDummySeeder.php` — 14 factory dan data dummy testing (30 pendaftar semua status + akun uji per role, khusus local/testing — lihat `PANDUAN-INSTALL.md`)
 - `app/Models/` — 20 model dengan `$fillable`, `casts()`, dan relasi antar model
-- `app/Http/Controllers/` — 28 controller: `Public/`, `Applicant/`, `Admin/`, `Guru/`, dan `Auth/`
+- `app/Http/Controllers/` — 29 controller: `Public/`, `Applicant/`, `Admin/`, `Guru/`, dan `Auth/`
 - `app/Http/Requests/` — 10 Form Request untuk validasi (termasuk register & login di `Requests/Auth/`)
 - `app/Http/Middleware/EnsureUserHasRole.php` — middleware `role`
 - `app/Http/Middleware/IdleTimeoutLogout.php` — middleware `idle.timeout`: **auto-logout setelah 5 menit tidak ada aktivitas**, dengan pesan penjelasan di halaman login
 - `routes/ppdb.php` + `routes/ppdb-auth.php` — semua route PPDB & auth, terpisah dari `routes/web.php`
-- `resources/views/` — 60 file Blade: 1 layout utama, 5 komponen (termasuk sidebar per peran), view untuk semua controller (publik, pendaftar, admin per peran, guru), 4 partial form, dan 4 view auth
+- `resources/views/` — 61 file Blade: 1 layout utama, 5 komponen (termasuk sidebar per peran), view untuk semua controller (publik, pendaftar, admin per peran, guru), 4 partial form, dan 5 view auth
 
 ## Cara pasang Blade View
 
@@ -39,11 +39,13 @@ Ditulis dengan gaya Laravel 11/12 (anonymous class migration).
 
    ```php
    use App\Http\Middleware\EnsureUserHasRole;
+   use App\Http\Middleware\EnsurePasswordChanged;
    use App\Http\Middleware\IdleTimeoutLogout;
 
    ->withMiddleware(function (Middleware $middleware) {
        $middleware->alias([
            'role' => EnsureUserHasRole::class,
+           'password.changed' => EnsurePasswordChanged::class,
            'idle.timeout' => IdleTimeoutLogout::class,
        ]);
    })
@@ -119,6 +121,7 @@ Controller mengembalikan view dengan nama berikut — semua file Blade-nya sudah
 ## Logika bisnis yang sudah ditanam di controller
 
 - Nomor pendaftaran otomatis: `PPDB-{tahun}-{id 4 digit}-{4 karakter acak}`, invoice otomatis: `INV-{tahun}-{id 4 digit}`
+- Kata sandi awal wajib diganti: akun dari seeder (admin + akun uji) punya flag `must_change_password`; middleware `EnsurePasswordChanged` mengarahkan mereka ke `/ganti-password` sebelum bisa membuka halaman lain. NIK di export CSV disamarkan (hanya 4 digit terakhir).
 - Pendaftaran hanya bisa dikirim (`submit`) jika semua dokumen wajib sesuai jalur sudah diunggah, dan hanya pada periode berstatus `open` di rentang tanggalnya
 - Upload dokumen mengikuti `allowed_extensions` + `max_size_mb` dari tabel `document_types`, disimpan di disk `local` (private); upload ulang mengganti file lama
 - Verifikasi pendaftaran ditolak sistem jika masih ada dokumen belum `verified`

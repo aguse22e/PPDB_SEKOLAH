@@ -52,7 +52,7 @@ class ReportController extends Controller
                     fputcsv($out, [
                         $app->registration_no,
                         $this->csvSafe($app->applicant->full_name),
-                        $this->csvSafe($app->applicant->nik),
+                        $this->maskNik($app->applicant->nik),
                         $this->csvSafe($app->applicant->previous_school),
                         $this->csvSafe($app->period->name),
                         $this->csvSafe($app->path->name),
@@ -109,5 +109,21 @@ class ReportController extends Controller
         }
 
         return in_array($value[0], ['=', '+', '-', '@', "\t", "\r"], true) ? "'" . $value : $value;
+    }
+
+    /**
+     * Samarkan NIK di laporan/export: hanya 4 digit terakhir yang tampil
+     * (contoh: ************0001). NIK lengkap tetap bisa diperiksa panitia
+     * lewat dokumen yang diunggah, bukan lewat laporan yang bisa tersebar.
+     */
+    private function maskNik(?string $nik): ?string
+    {
+        if ($nik === null || $nik === '') {
+            return $nik;
+        }
+
+        $len = strlen($nik);
+
+        return $len <= 4 ? str_repeat('*', $len) : str_repeat('*', $len - 4).substr($nik, -4);
     }
 }

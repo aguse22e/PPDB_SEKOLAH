@@ -93,6 +93,8 @@ class PpdbMasterSeeder extends Seeder
                 'name' => 'Admin PPDB',
                 'password' => Hash::make('password'),
                 'is_active' => true,
+                // Kata sandi awal wajib diganti saat login pertama (lihat EnsurePasswordChanged).
+                'must_change_password' => true,
             ]
         );
     }

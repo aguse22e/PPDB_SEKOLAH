@@ -12,10 +12,19 @@ class AttendanceController extends Controller
 {
     public function index(Request $request)
     {
-        $date = $request->input('date', today()->toDateString());
-        $type = $request->input('type'); // siswa | guru | null (semua)
-        $status = $request->input('status');
-        $search = trim((string) $request->input('search', ''));
+        // Validasi filter supaya nilai tanggal/status/tipe yang tidak valid
+        // tidak lolos ke query (tanggal tidak valid sebelumnya membuat error 500).
+        $filters = $request->validate([
+            'date' => ['nullable', 'date'],
+            'type' => ['nullable', 'in:siswa,guru'],
+            'status' => ['nullable', 'in:'.implode(',', Attendance::STATUSES)],
+            'search' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $date = $filters['date'] ?? today()->toDateString();
+        $type = $filters['type'] ?? null;
+        $status = $filters['status'] ?? null;
+        $search = trim((string) ($filters['search'] ?? ''));
 
         $query = Attendance::with('attendee')->whereDate('date', $date);
 

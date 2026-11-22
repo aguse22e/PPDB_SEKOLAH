@@ -18,6 +18,7 @@ class User extends Authenticatable
         'barcode_code',
         'password',
         'is_active',
+        'must_change_password',
         'last_login_at',
     ];
 
@@ -32,6 +33,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
             'is_active' => 'boolean',
+            'must_change_password' => 'boolean',
             'password' => 'hashed',
         ];
     }
