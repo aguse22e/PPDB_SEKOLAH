@@ -74,7 +74,7 @@ class ApplicationController extends Controller
         return view('applicant.applications.show', compact('application', 'requiredDocuments'));
     }
 
-    /** Kirim pendaftaran: hanya bisa jika semua dokumen wajib sudah diunggah. */
+    /** Kirim pendaftaran: hanya bisa jika langkah wizard sudah lengkap berurutan. */
     public function submit(Request $request, Application $application)
     {
         $this->ensureOwnApplication($request, $application);
@@ -88,13 +88,22 @@ class ApplicationController extends Controller
         abort_if(now()->lt($period->start_date) || now()->gt($period->end_date->endOfDay()), 422,
             'Periode pendaftaran tidak sedang berjalan.');
 
-        $requiredIds = $application->path->documentTypes()
-            ->wherePivot('is_required', true)
-            ->pluck('document_types.id');
+        // Langkah 1 — biodata calon siswa harus lengkap dulu.
+        if (! $application->isBiodataComplete()) {
+            return back()->withErrors([
+                'biodata' => 'Lengkapi biodata calon siswa dulu (nama lengkap dan jenis kelamin) sebelum mengirim pendaftaran.',
+            ]);
+        }
 
-        $uploadedIds = $application->documents()->pluck('document_type_id');
+        // Langkah 2 — minimal satu orang tua / wali.
+        if (! $application->hasGuardian()) {
+            return back()->withErrors([
+                'guardians' => 'Tambahkan minimal satu orang tua / wali dulu sebelum mengirim pendaftaran.',
+            ]);
+        }
 
-        $missing = $requiredIds->diff($uploadedIds);
+        // Langkah 3 — semua dokumen wajib harus sudah diunggah.
+        $missing = $application->missingRequiredDocumentTypeIds();
 
         if ($missing->isNotEmpty()) {
             return back()->withErrors([

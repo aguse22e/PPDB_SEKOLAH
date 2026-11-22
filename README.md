@@ -20,4 +20,22 @@ Aplikasi Penerimaan Peserta Didik Baru (PPDB) untuk sekolah — mencakup desain 
 
 ## Alur PPDB
 
-Beranda Publik → Register → Login → Dashboard per peran → siswa melengkapi biodata & pendaftaran → unggah berkas (KTP/Akte, KK, Ijazah) → kirim pendaftaran → panitia memverifikasi berkas → guru menilai seleksi → panitia menetapkan hasil akhir → tagihan & daftar ulang.
+Alur pendaftaran calon siswa (wizard, berurutan — tombol kirim hanya jalan
+bila langkah 2–5 sudah lengkap, dijaga `ApplicationController@submit`):
+
+1. Beranda Publik → Register → Login
+2. Lengkapi **biodata** calon siswa (nama lengkap dan jenis kelamin wajib)
+3. Tambahkan minimal satu **orang tua / wali**
+4. Buat **pendaftaran** (pilih periode, jalur, dan jurusan)
+5. Unggah **dokumen wajib** sesuai jalur (KTP/Akte, KK, Ijazah)
+6. **Kirim** pendaftaran
+7. Panitia **memverifikasi berkas** → guru **menilai seleksi** → panitia
+   menetapkan **hasil akhir**
+8. **Pengumuman** hasil (diterima / cadangan / ditolak), bisa dicek publik
+   lewat Cek Status
+9. **Tagihan & daftar ulang** (pembayaran diverifikasi panitia)
+
+Status pendaftaran bergerak: `draft` → `submitted` → `document_review` →
+`verified` → `selection` → `accepted` / `waitlisted` / `rejected` →
+`registered`, dengan `rejected_document` bila berkas ditolak dan `withdrawn`
+bila pendaftaran dibatalkan.
