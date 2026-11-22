@@ -9,6 +9,7 @@ use App\Models\AdmissionPeriod;
 use App\Models\Application;
 use App\Models\Major;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ApplicationController extends Controller
 {
@@ -48,12 +49,15 @@ class ApplicationController extends Controller
             'status' => 'draft',
         ]);
 
-        // Format nomor pendaftaran: PPDB-2027-0001
+        // Format nomor pendaftaran: PPDB-2027-0001-X7K2.
+        // Akhiran 4 karakter acak supaya nomor tidak bisa ditebak berurutan
+        // (Cek Status publik hanya butuh nomor + tanggal lahir).
         $year = $application->period->academicYear?->year;
         $yearPart = $year ? substr($year, 0, 4) : now()->format('Y');
-        $application->update([
-            'registration_no' => sprintf('PPDB-%s-%04d', $yearPart, $application->id),
-        ]);
+        do {
+            $registrationNo = sprintf('PPDB-%s-%04d-%s', $yearPart, $application->id, Str::upper(Str::random(4)));
+        } while (Application::where('registration_no', $registrationNo)->exists());
+        $application->update(['registration_no' => $registrationNo]);
 
         return redirect()
             ->route('applicant.applications.show', $application)

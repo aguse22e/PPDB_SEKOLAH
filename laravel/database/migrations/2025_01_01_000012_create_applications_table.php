@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('path_id')->constrained('admission_paths');
             $table->foreignId('major_id')->nullable()->constrained('majors');
             $table->foreignId('major_choice_2_id')->nullable()->constrained('majors');
-            $table->string('registration_no', 30)->unique(); // PPDB-2027-0001
+            $table->string('registration_no', 30)->unique(); // PPDB-2027-0001-X7K2
             $table->enum('status', ['draft','submitted','document_review','verified','rejected_document','selection','accepted','waitlisted','rejected','registered','withdrawn'])->default('draft')->index();
             $table->text('notes')->nullable();
             $table->timestamp('submitted_at')->nullable();

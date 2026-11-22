@@ -118,7 +118,7 @@ Controller mengembalikan view dengan nama berikut — semua file Blade-nya sudah
 
 ## Logika bisnis yang sudah ditanam di controller
 
-- Nomor pendaftaran otomatis: `PPDB-{tahun}-{id 4 digit}`, invoice otomatis: `INV-{tahun}-{id 4 digit}`
+- Nomor pendaftaran otomatis: `PPDB-{tahun}-{id 4 digit}-{4 karakter acak}`, invoice otomatis: `INV-{tahun}-{id 4 digit}`
 - Pendaftaran hanya bisa dikirim (`submit`) jika semua dokumen wajib sesuai jalur sudah diunggah, dan hanya pada periode berstatus `open` di rentang tanggalnya
 - Upload dokumen mengikuti `allowed_extensions` + `max_size_mb` dari tabel `document_types`, disimpan di disk `local` (private); upload ulang mengganti file lama
 - Verifikasi pendaftaran ditolak sistem jika masih ada dokumen belum `verified`

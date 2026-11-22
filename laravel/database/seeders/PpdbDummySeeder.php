@@ -156,7 +156,7 @@ class PpdbDummySeeder extends Seeder
 
         // Status submitted + dokumen pending: siap dipakai menguji verifikasi admin
         $application = Application::updateOrCreate(
-            ['registration_no' => 'PPDB-2027-0001'],
+            ['registration_no' => 'PPDB-2027-0001-A3F9'],
             [
                 'applicant_id' => $applicant->id,
                 'period_id' => $period->id,
@@ -204,7 +204,7 @@ class PpdbDummySeeder extends Seeder
                 'path_id' => $path->id,
                 'major_id' => $major->id,
                 'major_choice_2_id' => $majors->where('id', '!=', $major->id)->random()->id,
-                'registration_no' => sprintf('PPDB-2027-%04d', 100 + $i),
+                'registration_no' => sprintf('PPDB-2027-%04d-%s', 100 + $i, strtoupper(substr(md5('ppdb-'.$i), 0, 4))),
                 'status' => $status,
                 'submitted_at' => $status === 'draft' ? null : now()->subDays(rand(0, 6)),
                 'verified_at' => in_array($status, ['verified', 'selection', 'accepted', 'waitlisted', 'rejected', 'registered'], true)

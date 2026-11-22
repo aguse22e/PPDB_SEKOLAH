@@ -257,7 +257,7 @@ Lewati alur ini untuk memastikan semua modul tersambung:
 1. Buka `/register` → daftar dengan data calon siswa → otomatis masuk ke dashboard pendaftar.
 2. **Biodata** → lengkapi dan simpan.
 3. **Data Orang Tua/Wali** → tambah minimal satu (ayah/ibu/wali).
-4. **Daftar Baru** → pilih periode yang open, jalur, dan jurusan → tersimpan sebagai draft dengan nomor seperti `PPDB-2027-0001`.
+4. **Daftar Baru** → pilih periode yang open, jalur, dan jurusan → tersimpan sebagai draft dengan nomor seperti `PPDB-2027-0001-A3F9`.
 5. Di halaman detail pendaftaran, **unggah semua dokumen wajib** sesuai jalur.
 6. Klik **Kirim Pendaftaran** → status menjadi Terkirim. Coba juga `/ppdb/cek-status` dengan nomor pendaftaran + tanggal lahir.
 
@@ -302,7 +302,7 @@ Akun uji — semua berpassword `password`:
 | `keuangan@sekolah.sch.id` | Keuangan | Untuk uji verifikasi pembayaran |
 | `kepsek@sekolah.sch.id` | Kepala Sekolah | Untuk uji laporan |
 | `guru@sekolah.sch.id` | Guru / Penilai Seleksi | Untuk uji dashboard guru & input nilai seleksi |
-| `siswa@contoh.id` | Pendaftar | Budi Pratama, pendaftaran `PPDB-2027-0001` berstatus terkirim; tanggal lahir `2012-05-17` untuk uji Cek Status |
+| `siswa@contoh.id` | Pendaftar | Budi Pratama, pendaftaran `PPDB-2027-0001-A3F9` berstatus terkirim; tanggal lahir `2012-05-17` untuk uji Cek Status |
 
 **RBAC — pemisahan ketat antarperan (berlaku juga untuk akun uji di atas):** area pendaftar hanya untuk `applicant`, area guru hanya untuk `guru`, area admin hanya untuk peran panitia. Pemeriksaan dilakukan middleware `role` di server pada setiap request — siswa yang mengetik URL dashboard admin/guru secara langsung tetap ditolak, begitu pula sebaliknya (admin tidak masuk area guru/pendaftar). Register publik selalu menetapkan peran `applicant`; akun guru/admin dan perubahan peran hanya dibuat oleh pihak yang berwenang. Peran yang tidak dikenal ditolak secara default.
 

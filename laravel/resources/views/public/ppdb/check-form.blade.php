@@ -10,7 +10,7 @@
             @csrf
             <div class="mb-3">
                 <label class="form-label">Nomor Pendaftaran</label>
-                <input type="text" name="registration_no" class="form-control" placeholder="PPDB-2027-0001" value="{{ old('registration_no') }}" required>
+                <input type="text" name="registration_no" class="form-control" placeholder="PPDB-2027-0001-A3F9" value="{{ old('registration_no') }}" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Tanggal Lahir</label>

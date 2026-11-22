@@ -19,7 +19,7 @@ class ApplicationFactory extends Factory
             'path_id' => AdmissionPath::factory(),
             'major_id' => Major::factory(),
             'major_choice_2_id' => null,
-            'registration_no' => 'PPDB-' . fake()->year() . '-' . fake()->unique()->numerify('####'),
+            'registration_no' => 'PPDB-' . fake()->year() . '-' . fake()->unique()->numerify('####') . '-' . strtoupper(fake()->lexify('????')),
             'status' => 'draft',
             'notes' => null,
             'submitted_at' => null,

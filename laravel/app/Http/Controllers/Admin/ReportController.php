@@ -52,11 +52,11 @@ class ReportController extends Controller
                     fputcsv($out, [
                         $app->registration_no,
                         $this->csvSafe($app->applicant->full_name),
-                        $app->applicant->nik,
+                        $this->csvSafe($app->applicant->nik),
                         $this->csvSafe($app->applicant->previous_school),
-                        $app->period->name,
-                        $app->path->name,
-                        $app->major?->name,
+                        $this->csvSafe($app->period->name),
+                        $this->csvSafe($app->path->name),
+                        $this->csvSafe($app->major?->name),
                         $app->status,
                         $app->submitted_at?->format('Y-m-d H:i'),
                     ]);
@@ -98,9 +98,9 @@ class ReportController extends Controller
     }
 
     /**
-     * Cegah CSV/Formula Injection: sel teks yang diawali =, +, -, atau @
-     * bisa dieksekusi Excel sebagai formula. Awali dengan tanda petik
-     * agar diperlakukan sebagai teks biasa.
+     * Cegah CSV/Formula Injection: sel teks yang diawali =, +, -, @, tab,
+     * atau carriage return bisa dieksekusi Excel sebagai formula. Awali
+     * dengan tanda petik agar diperlakukan sebagai teks biasa.
      */
     private function csvSafe(?string $value): ?string
     {
@@ -108,6 +108,6 @@ class ReportController extends Controller
             return $value;
         }
 
-        return in_array($value[0], ['=', '+', '-', '@'], true) ? "'" . $value : $value;
+        return in_array($value[0], ['=', '+', '-', '@', "\t", "\r"], true) ? "'" . $value : $value;
     }
 }

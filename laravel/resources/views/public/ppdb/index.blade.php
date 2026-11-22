@@ -120,7 +120,7 @@
     </div>
 </div>
 <script>
-    window.PENGUMUMAN = {!! json_encode($announcements->mapWithKeys(fn ($a) => [$a->id => ['judul' => $a->title, 'tgl' => $a->publish_at?->format('d M Y'), 'isi' => $a->content]])) !!};
+    window.PENGUMUMAN = @json($announcements->mapWithKeys(fn ($a) => [$a->id => ['judul' => $a->title, 'tgl' => $a->publish_at?->format('d M Y'), 'isi' => $a->content]]));
     var pengIds = Object.keys(window.PENGUMUMAN), pengIdx = 0;
     function renderPengumuman() {
         var p = window.PENGUMUMAN[pengIds[pengIdx]]; if (!p) return;
