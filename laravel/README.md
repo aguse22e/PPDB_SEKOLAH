@@ -1,20 +1,20 @@
 # PPDB Laravel — Migration, Model, Seeder, Controller, Route & Blade View
 
-Paket ini adalah versi Laravel dari `ppdb_schema.sql` (19 tabel).
+Paket ini adalah versi Laravel dari `ppdb_schema.sql` (20 tabel).
 Ditulis dengan gaya Laravel 11/12 (anonymous class migration).
 
 ## Isi paket
 
-- `database/migrations/` — 20 migration, nomor urut 000001–000020 agar foreign key aman saat `migrate` (000020 = `password_reset_tokens` + `sessions` untuk auth)
+- `database/migrations/` — 23 migration, nomor urut 000001–000023 agar foreign key aman saat `migrate` (000020 = `password_reset_tokens` + `sessions` untuk auth; 000021–000023 = tabel `attendances` + kolom `barcode_code`)
 - `database/seeders/PpdbMasterSeeder.php` — role, jalur, jenis dokumen, syarat dokumen per jalur, settings, dan 1 akun admin awal
 - `database/factories/` + `database/seeders/PpdbDummySeeder.php` — 14 factory dan data dummy testing (30 pendaftar semua status + akun uji per role, khusus local/testing — lihat `PANDUAN-INSTALL.md`)
-- `app/Models/` — 19 model dengan `$fillable`, `casts()`, dan relasi antar model
-- `app/Http/Controllers/` — 26 controller: `Public/`, `Applicant/`, `Admin/`, `Guru/`, dan `Auth/`
+- `app/Models/` — 20 model dengan `$fillable`, `casts()`, dan relasi antar model
+- `app/Http/Controllers/` — 28 controller: `Public/`, `Applicant/`, `Admin/`, `Guru/`, dan `Auth/`
 - `app/Http/Requests/` — 10 Form Request untuk validasi (termasuk register & login di `Requests/Auth/`)
 - `app/Http/Middleware/EnsureUserHasRole.php` — middleware `role`
 - `app/Http/Middleware/IdleTimeoutLogout.php` — middleware `idle.timeout`: **auto-logout setelah 5 menit tidak ada aktivitas**, dengan pesan penjelasan di halaman login
 - `routes/ppdb.php` + `routes/ppdb-auth.php` — semua route PPDB & auth, terpisah dari `routes/web.php`
-- `resources/views/` — 56 file Blade: 1 layout utama, 5 komponen (termasuk sidebar per peran), view untuk semua controller (publik, pendaftar, admin per peran, guru), 4 partial form, dan 4 view auth
+- `resources/views/` — 60 file Blade: 1 layout utama, 5 komponen (termasuk sidebar per peran), view untuk semua controller (publik, pendaftar, admin per peran, guru), 4 partial form, dan 4 view auth
 
 ## Cara pasang Blade View
 

@@ -1,6 +1,6 @@
 # Panduan Install PPDB Laravel — dari Nol sampai Jalan
 
-Panduan ini memasang paket **PPDB Laravel Lengkap** (20 migration, 19 model, 26 controller, 10 form request, 56 view Blade, auth bawaan) ke proyek Laravel baru yang masih kosong.
+Panduan ini memasang paket **PPDB Laravel Lengkap** (23 migration, 20 model, 28 controller, 10 form request, 60 view Blade, auth bawaan) ke proyek Laravel baru yang masih kosong.
 Waktu tempuh: sekitar 20–30 menit jika semua syarat sudah terpasang.
 
 > **Aturan emas sebelum mulai:** jangan install starter kit auth apa pun (Breeze/Jetstream/Fortify) di proyek ini. Paket PPDB sudah punya register/login/reset password sendiri, dan nama route-nya akan bentrok jika digabung.
@@ -79,7 +79,7 @@ Ekstrak `ppdb-laravel-lengkap.zip`, lalu salin isinya mengikuti tabel ini:
 
 | Dari paket (`laravel/`) | Ke proyek | Keterangan |
 |---|---|---|
-| `database/migrations/*.php` | `database/migrations/` | 20 file, nomor 000001–000020 |
+| `database/migrations/*.php` | `database/migrations/` | 23 file, nomor 000001–000023 |
 | `database/seeders/PpdbMasterSeeder.php` | `database/seeders/` | |
 | `app/Models/*.php` | `app/Models/` | `User.php` menimpa model bawaan — memang harus |
 | `app/Http/Controllers/*` | `app/Http/Controllers/` | Termasuk folder `Auth`, `Applicant`, `Admin`, `Public`. File `Controller.php` bawaan **jangan ditimpa** (paket tidak menyertakannya) |

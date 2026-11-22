@@ -15,6 +15,7 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'barcode_code',
         'password',
         'is_active',
         'last_login_at',
@@ -38,6 +39,18 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    protected static function booted(): void
+    {
+        // Kode barcode guru dibuat otomatis saat akun guru dibuat: GRU + 6 digit id.
+        static::created(function (User $user) {
+            if (empty($user->barcode_code) && $user->role?->code === 'guru') {
+                $user->updateQuietly([
+                    'barcode_code' => 'GRU'.str_pad((string) $user->id, 6, '0', STR_PAD_LEFT),
+                ]);
+            }
+        });
     }
 
     public function applicant()

@@ -11,6 +11,9 @@
     @if(in_array(auth()->user()->role?->code, ['admin', 'verifikator']))
         <a href="{{ route('admin.applications.index') }}" class="list-group-item list-group-item-action">Verifikasi Pendaftaran</a>
     @endif
+    @if(in_array(auth()->user()->role?->code, ['admin', 'verifikator', 'kepala_sekolah']))
+        <a href="{{ route('admin.attendance.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('admin.attendance.*') ? 'active' : '' }}">Absensi Barcode</a>
+    @endif
     @if(in_array(auth()->user()->role?->code, ['admin', 'finance']))
         <a href="{{ route('admin.payments.index') }}" class="list-group-item list-group-item-action">Pembayaran</a>
     @endif

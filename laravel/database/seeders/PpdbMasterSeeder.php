@@ -78,6 +78,7 @@ class PpdbMasterSeeder extends Seeder
             'nama_sekolah' => '',
             'biaya_formulir' => '0',
             'biaya_daftar_ulang' => '0',
+            'attendance.start_time' => '07:00',
         ];
         foreach ($settings as $key => $value) {
             Setting::updateOrCreate(['key' => $key], ['value' => $value]);

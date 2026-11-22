@@ -20,6 +20,9 @@ admission_paths N---N document_types
 users 1---N notifications
 users 1---N audit_logs
 admission_periods 1---N announcements
+
+attendances: 1 siswa (applicants) / 1 guru (users) per hari
+  (polimorfik: attendee_type + attendee_id, unik per tanggal)
 ```
 
 ## Aturan penting
@@ -28,3 +31,4 @@ admission_periods 1---N announcements
 3. Syarat dokumen ditentukan dari `path_document_requirements`, jadi admin bisa mengubah syarat per jalur tanpa mengubah kode.
 4. Kuota jurusan per gelombang diatur di `period_major_quotas`, bukan hanya di `majors.quota`.
 5. NIK / nomor KK termasuk data sensitif: batasi akses per role, catat di `audit_logs`, jangan tampilkan penuh di laporan publik.
+6. Absensi barcode: satu orang satu baris per hari (`attendances`, unik per `attendee_type` + `attendee_id` + `date`); scan pertama = masuk, scan kedua = pulang. Kode barcode siswa `SIS + id` di `applicants.barcode_code`, guru `GRU + id` di `users.barcode_code`; jam masuk dari Setting `attendance.start_time` (default 07:00), masuk setelah jam itu berstatus `terlambat`.

@@ -22,6 +22,12 @@
         'passed' => ['success', 'Lulus'],
         'open' => ['success', 'Dibuka'],
         'closed' => ['dark', 'Ditutup'],
+        // Absensi barcode
+        'hadir' => ['success', 'Hadir'],
+        'terlambat' => ['warning', 'Terlambat'],
+        'izin' => ['info', 'Izin'],
+        'sakit' => ['primary', 'Sakit'],
+        'alpa' => ['danger', 'Alpa'],
     ];
     [$color, $label] = $map[$status] ?? ['secondary', ucfirst(str_replace('_', ' ', (string) $status))];
 @endphp

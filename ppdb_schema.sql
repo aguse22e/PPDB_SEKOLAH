@@ -301,6 +301,26 @@ CREATE TABLE settings (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+CREATE TABLE attendances (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  attendee_type VARCHAR(100) NOT NULL, -- App\Models\Applicant (siswa) / App\Models\User (guru)
+  attendee_id BIGINT UNSIGNED NOT NULL,
+  `date` DATE NOT NULL,
+  check_in_at TIMESTAMP NULL,
+  check_out_at TIMESTAMP NULL,
+  `status` ENUM('hadir','terlambat','izin','sakit','alpa') NOT NULL DEFAULT 'hadir',
+  `method` ENUM('barcode','manual') NOT NULL DEFAULT 'barcode',
+  scanned_by BIGINT UNSIGNED NULL,
+  notes TEXT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY attendances_person_date_unique (attendee_type, attendee_id, `date`),
+  FOREIGN KEY (scanned_by) REFERENCES users(id)
+) ENGINE=InnoDB;
+
+ALTER TABLE applicants ADD COLUMN barcode_code VARCHAR(20) NULL UNIQUE AFTER phone;
+ALTER TABLE users ADD COLUMN barcode_code VARCHAR(20) NULL UNIQUE AFTER phone;
+
 -- ------------------------------------------------------------
 -- SEED DATA AWAL
 -- ------------------------------------------------------------

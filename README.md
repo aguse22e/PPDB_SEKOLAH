@@ -6,7 +6,7 @@ Aplikasi Penerimaan Peserta Didik Baru (PPDB) untuk sekolah — mencakup desain 
 
 ## Isi Repo
 
-- `laravel/` — Paket Laravel lengkap: 20 migration, 19 model, 26 controller, 10 form request, 56 view Blade, seeder, factory, dan auth bawaan (register, login, reset password) dengan peran applicant, guru, admin, verifikator, finance, dan kepala sekolah.
+- `laravel/` — Paket Laravel lengkap: 23 migration, 20 model, 28 controller, 10 form request, 60 view Blade, seeder, factory, dan auth bawaan (register, login, reset password) dengan peran applicant, guru, admin, verifikator, finance, dan kepala sekolah.
 - `preview/preview-web-ppdb.html` — Preview web satu berkas yang dapat dibuka langsung di browser: Beranda Publik, register/login per peran, dashboard siswa/guru/admin, CRUD data master, unggah berkas, verifikasi, pembayaran, dan laporan (simulasi dengan penyimpanan browser).
 - `ppdb_schema.sql` — Skema MySQL 19 tabel.
 - `ERD.md` dan `erd/` — Entity Relationship Diagram (teks, Mermaid, SVG, dan HTML).
@@ -39,3 +39,20 @@ Status pendaftaran bergerak: `draft` → `submitted` → `document_review` →
 `verified` → `selection` → `accepted` / `waitlisted` / `rejected` →
 `registered`, dengan `rejected_document` bila berkas ditolak dan `withdrawn`
 bila pendaftaran dibatalkan.
+
+## Absensi Barcode (Siswa & Guru)
+
+- Setiap siswa yang sudah daftar ulang punya kode barcode `SIS + nomor`
+  (contoh `SIS000001`), setiap guru `GRU + nomor`. Kode dibuat otomatis
+  saat akun dibuat; kartu lama yang belum punya kode bisa dibuat lewat
+  tombol "Buat Kode yang Belum Ada" di halaman Kartu Barcode.
+- Scan di halaman **Absensi → Scan Barcode** (panitia) atau **Scan Absensi**
+  (guru): scan pertama hari itu = absen masuk, scan kedua = absen pulang.
+  Pemindai barcode USB biasa langsung mengetik kodenya ke kolom scan.
+- Masuk setelah jam masuk sekolah berstatus **Terlambat** (jam masuk dari
+  Setting `attendance.start_time`, default `07:00`).
+- Izin / sakit / alpa dicatat manual dari halaman rekap absensi, lengkap
+  dengan ubah status dan hapus. Rekap bisa difilter per tanggal, tipe
+  (siswa/guru), status, dan nama; kepala sekolah bisa melihat rekap.
+- Kartu barcode bisa dicetak dari halaman **Kartu Barcode** (barcode
+  digambar otomatis dari kodenya, format CODE128).

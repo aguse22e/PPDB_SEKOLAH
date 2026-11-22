@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\AdmissionPathController;
 use App\Http\Controllers\Admin\AdmissionPeriodController;
 use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\ApplicationVerificationController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\DocumentTypeController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Applicant\GuardianController;
 use App\Http\Controllers\Applicant\PaymentController;
 use App\Http\Controllers\Applicant\ResultController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
+use App\Http\Controllers\Guru\AttendanceScanController as GuruAttendanceController;
 use App\Http\Controllers\Guru\SelectionController as GuruSelectionController;
 use App\Http\Controllers\Public\PpdbPublicController;
 use Illuminate\Support\Facades\Route;
@@ -165,6 +167,21 @@ Route::middleware(['auth', 'idle.timeout'])
             Route::get('/laporan/export-pendaftar', [ReportController::class, 'exportApplications'])->name('reports.export-applications');
             Route::get('/laporan/export-pembayaran', [ReportController::class, 'exportPayments'])->name('reports.export-payments');
         });
+
+        // Absensi barcode siswa & guru: rekap & kartu bisa dilihat kepala sekolah,
+        // scan & kelola manual hanya panitia (admin + verifikator).
+        Route::middleware('role:admin,verifikator,kepala_sekolah')->group(function () {
+            Route::get('/absensi', [AttendanceController::class, 'index'])->name('attendance.index');
+            Route::get('/absensi/kartu', [AttendanceController::class, 'cards'])->name('attendance.cards');
+        });
+        Route::middleware('role:admin,verifikator')->group(function () {
+            Route::get('/absensi/scan', [AttendanceController::class, 'scanForm'])->name('attendance.scan-form');
+            Route::post('/absensi/scan', [AttendanceController::class, 'scan'])->name('attendance.scan');
+            Route::post('/absensi/manual', [AttendanceController::class, 'storeManual'])->name('attendance.manual');
+            Route::put('/absensi/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
+            Route::delete('/absensi/{attendance}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
+            Route::post('/absensi/buat-barcode', [AttendanceController::class, 'generateMissing'])->name('attendance.generate-barcode');
+        });
     });
 
 // ---------------------------------------------------------------------
@@ -179,6 +196,8 @@ Route::middleware(['auth', 'idle.timeout', 'role:guru'])
     ->name('guru.')
     ->group(function () {
         Route::get('/dashboard', [GuruDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/absensi/scan', [GuruAttendanceController::class, 'scanForm'])->name('attendance.scan-form');
+        Route::post('/absensi/scan', [GuruAttendanceController::class, 'scan'])->name('attendance.scan');
         Route::get('/seleksi', [GuruSelectionController::class, 'index'])->name('selection.index');
         Route::get('/seleksi/{application}', [GuruSelectionController::class, 'show'])->name('selection.show');
         Route::post('/seleksi/{application}/nilai', [GuruSelectionController::class, 'store'])->name('selection.store');
